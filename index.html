@@ -3,24 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>My Todo App</title>
+    <link rel="stylesheet" href="css/normalize.css"/>
     <link rel="stylesheet" href="css/main.css"/>
 </head>
 <body>
-<div class="container">
-    <div class="tasks">
-        <div class="task-item">item 1</div>
-        <div class="task-item">item 2</div>
-        <div class="task-item">item 3</div>
-        <div class="task-item">item 4</div>
-        <div class="task-item">item 5</div>
-        <div class="task-item">item 6</div>
-        <div class="task-item">item 7</div>
-        <div class="task-item">item 8</div>
-        <div class="task-item">item 9</div>
-        <div class="task-item">item 10</div>
-
+<div class="container">  <!--总容器-->
+    <h1>我的todoList</h1>
+    <div class="add-task">
+        <input type="text" placeholder="e.g.下午记得买菜哦">
+        <button type="submit">submit</button>
     </div>
-</div>
+    <div class="task-list">   <!--清单列表开始-->
+        <div class="task-item">
+                <span><input type="checkbox"></span>
+                <span class="task-content">hehd</span>
+                <span>delete</span>
+                <span>detail</span>
+        </div>
+        <div class="task-item">
+                <span><input type="checkbox"></span>
+                <span class="task-content">hehd</span>
+                <span>delete</span>
+                <span>detail</span>
+        </div>
+        <div class="task-item">
+                <span><input type="checkbox"></span>
+                <span class="task-content">hehd</span>
+                <span>delete</span>
+                <span>detail</span>
+        </div>
+        <div class="task-item">
+                <span><input type="checkbox"></span>
+                <span class="task-content">hehd</span>
+                <span>delete</span>
+                <span>detail</span>
+        </div>
+        <div class="task-item">
+                <span><input type="checkbox"></span>
+                <span class="task-content">hehd</span>
+                <span>delete</span>
+                <span>detail</span>
+        </div>
+    </div>  <!--清单列表结束-->
+    <div class="task-detail">  <!--任务详情-->
+        <div class="content"></div>  <!--任务标题-->
+        <div> <!--任务描述-->
+            <div class="desc">
+
+            </div>
+        </div><!--任务描述结束-->
+        <div class="remind">  <!--任务定时提醒-->
+            <input type="date">
+            <button type="submit">submit</button>
+        </div> <!--任务提醒结束-->
+    </div>    <!--任务详情结束-->
+</div>   <!--总容器结束-->
 
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script src="js/main.js"></script>

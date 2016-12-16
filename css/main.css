@@ -64,13 +64,24 @@ button{
     width: 84%;
     margin-right:1%;
 }
-.add-task button{
+.add-task button,
+.remind button{
     width: 15%;
     background-color: #46b1e4;
     box-shadow:0 2px 3px rgba(0,0,0,.4);
-    transition: border-radius  .3s;
     transition: background .3s;
 }
+
+.remind input,
+.task-detail textarea{
+    margin-top: 10px;
+}
+
+.remind button{
+    float: right;
+    margin: 20px;
+}
+
 .add-task button:hover{
     background: #50c8ff;
     border-radius: 8px;

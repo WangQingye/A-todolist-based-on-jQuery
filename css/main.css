@@ -10,7 +10,8 @@ body{
 .container {
     max-width: 900px;
     margin: 0 auto;
-
+    position: relative;
+    padding: 0 10px;
 }
 .tasks{
     margin-left: 300px;
@@ -24,19 +25,25 @@ h1{
     margin:10px 0;
 }
 
-input, .task-item , button{
+input,
+.task-item,
+.task-detail,
+button,
+.task-detail-mask,
+.task-detail textarea{
     border-radius: 3px;
     padding: 10px;
 }
 
-input[type=text],input[type=date]{
+textarea,input[type=text],input[type=date]{
     display: block;
     width: 100%;
     border: 0;
     background: #f1f1f1;
     box-shadow: inset 0 3px 2px rgba(0,0,0,.3);
 }
-
+textarea:hover,
+textarea:focus,
 input[type=text]:hover,
 input[type=date]:hover,
 input[type=text]:focus,
@@ -79,6 +86,61 @@ button{
 }
 
 .task-item:hover{
-    background:#CCC;
+    background: #e0e0e0;
 }
 
+.task-detail{
+    position: absolute;
+    padding: 10px;
+    color: #333;
+    background:#fff;
+    bottom:0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    display: none;
+}
+
+.task-detail .content{
+    padding: 10px;
+    font-weight:900;
+
+}
+
+.task-detail>*{
+    margin-bottom:10px;
+}
+
+textarea{
+    border: 0;
+    height:130px;
+}
+
+.task-detail-mask{
+    position: absolute;
+    padding: 10px;
+    background:rgba(0,0,0,.2);
+    bottom:0;
+    right: 0;
+    left: 0;
+    top: 0;
+    display: none;
+}
+
+.action {
+    color: #888;
+    font-size:90%;
+    margin-right: 10px;
+}
+.action:hover {
+    color: #343434;
+    font-size:90%;
+}
+
+.fr{
+    float: right;
+}
+
+.task-content{
+    margin-left:10px;
+}

@@ -12,7 +12,8 @@
         $task_detail_mask = $('.task-detail-mask'),
         task_list={},
         $task_item,
-        $update_form
+        $update_form,
+        $checkbox_complete
         ;
 
     init();
@@ -110,6 +111,34 @@
         });
     }
 
+    //监听事件完成状态
+    function listen_checkbox_complete(){
+
+        $checkbox_complete.on('click',function(){
+
+
+            var $this = $(this);
+
+          /*  var is_complete = $this.is(':checked');*/
+
+            var index = $this.parent().parent().data('index');
+
+            var item = store.get('task_list')[index];
+
+            if (item.complete){
+
+                update_task(index,{complete:false})
+
+            }else{
+
+                update_task(index,{complete:true})
+
+            }
+            console.log(item);
+        })
+
+    }
+
     //查看task详情：
     function show_task_detail(index){
 
@@ -128,13 +157,15 @@
     }
 
     //更新任务详情:
-    function update_task_detail( index, data ){
+    function update_task( index, data ){
 
         if(index === undefined || !task_list[index]) return;
 
-        task_list[index] = data;
+        task_list[index] = $.extend({},task_list[index], data);
 
         refresh_task_list();
+
+
     }
 
     //渲染特定的任务详情:
@@ -188,7 +219,7 @@
             data.remind_date = $detail_form.find('[name=remind]').val();
 
             /*console.log(data);*/
-            update_task_detail(index,data);
+            update_task(index,data);
 
             $task_detail.hide();
             $task_detail_mask.hide();
@@ -232,8 +263,10 @@
        $delete_task = $ ('.action.delete');
        $watch_detail = $('.action.detail');
        $task_item = $('.task-item');
+       $checkbox_complete = $('.task-item .complete');
        listen_delete_task();   //在此调用事件添加，才能成功添加
        listen_watch_detail();
+       listen_checkbox_complete();
 
     }
 
@@ -243,7 +276,7 @@
         if(!data || !index ) return;  /*如果没有数据，就不添加*/
 
         var list_item_tpl = '<form class="task-item" data-index='+index+'>'+
-            '<span><input type="checkbox"></span>'+
+            '<span><input type="checkbox" class="complete" ' + (data.complete ? '' : 'checked' ) + '></span>'+
             '<span class="task-content">'+data.content+'</span>'+
             '<span class="fr">'+
                 '<span class="action detail">详细</span>'+

@@ -252,9 +252,31 @@
 
         $task_list.html('');
 
+        var complete_items = [];
+
         for(var i=0; i<task_list.length;i++){
 
-            var $task = render_task_tpl(task_list[i],i);
+            var item = task_list[i];
+
+            if(item && item.complete) {
+
+                complete_items[i]=item;
+
+            } else {
+                var $task = render_task_tpl(item,i);
+
+                $task_list.prepend($task);
+            }
+        }
+
+        for(var j=0; j<complete_items.length;j++){
+
+
+            $task = render_task_tpl(complete_items[j],j);
+
+            if(!$task) continue;
+
+            $task.addClass('completed');
 
             $task_list.append($task);
 
@@ -275,8 +297,9 @@
 
         if(!data || !index ) return;  /*如果没有数据，就不添加*/
 
-        var list_item_tpl = '<form class="task-item" data-index='+index+'>'+
-            '<span><input type="checkbox" class="complete" ' + (data.complete ? '' : 'checked' ) + '></span>'+
+        var list_item_tpl =
+            '<form class="task-item" data-index='+index+'>'+
+            '<span><input type="checkbox" class="complete" ' + (data.complete ? 'checked' : '' ) + '></span>'+
             '<span class="task-content">'+data.content+'</span>'+
             '<span class="fr">'+
                 '<span class="action detail">详细</span>'+

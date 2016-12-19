@@ -96,6 +96,22 @@ button{
     transition: background .3s;
 }
 
+.task-item.completed{
+    color: #aaa;
+    background: rgba(255,255,255,.8);
+}
+
+.task-item.completed:after{
+    content: " ";
+    background: #aaa;
+    width: 88%;
+    height: 2px;
+    position: relative;
+    top:-10px;
+    right: -20px;
+    display: block;
+}
+
 .task-item:hover{
     background: #e0e0e0;
 }
@@ -155,3 +171,4 @@ textarea{
 .task-content{
     margin-left:10px;
 }
+

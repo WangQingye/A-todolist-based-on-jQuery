@@ -5,6 +5,8 @@
     'use strict';
 
     var $add_button = $ ('.add-task button'),
+        $body = $('body'),
+        $window = $(window),
         $from_add_task = $ ('.add-task'),
         $delete_task,
         $watch_detail,
@@ -13,12 +15,102 @@
         task_list={},
         $task_item,
         $update_form,
-        $checkbox_complete
+        $checkbox_complete,
+        $msg = $('.msg')
         ;
 
     init();
+    my_alert('sa');
+    function my_alert(arg){
+
+        if(!arg){
+            console.log('alert title is undefined');
+        }
+
+        var cfg = {},$box,$mask,$title,$content;
+
+        $box = $(
+            '<div>' +
+                '<div class="alert-title">您确定要删除我吗？>.<~</div>'+
+                '<div class="alert-content">' +
+                '<div>' +
+                    '<button class="alert-button">确定</button>' +
+                    '<button class="alert-button">取消</button>'+
+                '</div>'+
+                '</div>'+
+
+            '</div>')
+
+            .css({
+            width:400,
+            height:200,
+            background:'#fff',
+            color:'#333',
+            position:'fixed',
+            'border-radius':10,
+            'box-shadow':'1px 1px 2px rgba(0,0,0,.9)'
+        });
+
+        $title = $box.find('.alert-title').css({
+            padding:'30px 10px',
+            'font-weight' : 900,
+            'font-size':20,
+            'text-align':'center',
 
 
+        });
+
+        $content = $box.find('.alert-content').css({
+            padding:'5px 10px',
+            'text-align':'center',
+
+        });
+
+
+
+
+        //动态居中提醒框
+        function adjust_box_positon(){
+
+           var window_w = $window.width(),
+               window_h = $window.height(),
+               box_w = $box.width(),
+               box_h = $box.height(),
+               move_x = (window_w-box_w)/2,
+               move_y = (window_h-box_h)/2 - 50;
+
+            console.log($window.width());
+
+
+            $box.css({
+                left : move_x,
+                top : move_y
+            });
+        }
+        adjust_box_positon();
+        $window.on('resize',function(){
+            adjust_box_positon();
+        });
+
+        $mask = $('<div></div>').css({
+            position:'fixed',
+            top:0,
+            bottom:0,
+            left:0,
+            right:0,
+            background:'rgba(0,0,0,.3)'
+        });
+
+        $body.append($mask);
+        $body.append($box);
+
+        if(typeof arg == 'string'){
+            cfg.title = arg;
+        }else {
+            cfg = $.extend(cfg,arg);
+        }
+
+    }
 
     $add_button.on('click',function(e){    /*确认添加*/
 
@@ -158,20 +250,28 @@
                 if (current_timestamp - task_reminddate >= 1) {  //现在的时间大于了设置的时间
 
                     update_task(i,{informed:true});
-                    notice(item.content);
+                    notice_msg_show(item.content);
 
                 }
 
             }
         },1000);
+    }
 
+    function notice_msg_show(msg){
 
+        $msg.find('span').html(msg);
+        $msg.show();
+        $('.alerter').get(0).play();
+        listen_notice_msg_hide();
 
     }
 
-    function notice(content){
+    function listen_notice_msg_hide(){
 
-        console.log(1);
+        $msg.on('click','button',function(){
+            $msg.hide()
+        });
 
     }
 

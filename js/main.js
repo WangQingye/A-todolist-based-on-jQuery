@@ -20,22 +20,41 @@
         ;
 
     init();
-    my_alert('sa');
+
     function my_alert(arg){
 
         if(!arg){
             console.log('alert title is undefined');
         }
 
-        var cfg = {},$box,$mask,$title,$content;
+        var cfg = {},
+            $box,
+            $mask,
+            $title,
+            $content,
+            $confirm,
+            $cancel,
+            timer,
+            dfd,
+            confirmed
+            ;
+
+        if(typeof arg == 'string'){
+            cfg.title = arg;
+        }else {
+            cfg = $.extend(cfg,arg);
+        }
+
+
+        dfd = $.Deferred();  //用deferred的好处是在弹出框的同时不会影响程序其他进程
 
         $box = $(
             '<div>' +
-                '<div class="alert-title">您确定要删除我吗？>.<~</div>'+
+                '<div class="alert-title">'+cfg.title+'</div>'+
                 '<div class="alert-content">' +
                 '<div>' +
-                    '<button class="alert-button">确定</button>' +
-                    '<button class="alert-button">取消</button>'+
+                    '<button style="width:30%" class="alert-button confirm">确定</button>' +
+                    '<button style="margin-left:80px;width:30%" class="alert-button cancel">取消</button>'+
                 '</div>'+
                 '</div>'+
 
@@ -50,14 +69,57 @@
             'border-radius':10,
             'box-shadow':'1px 1px 2px rgba(0,0,0,.9)'
         });
+        $mask = $('<div></div>').css({
+            position:'fixed',
+            top:0,
+            bottom:0,
+            left:0,
+            right:0,
+            background:'rgba(0,0,0,.3)'
+        });
+
+        $confirm = $box.find('.confirm');
+        $cancel = $box.find('.cancel');
+
+        timer = setInterval(function(){
+
+            if(confirmed !== undefined){
+                dfd.resolve(confirmed);
+                clearInterval(timer);
+                dismiss_alert();
+            }
+
+        },50);
+
+        $confirm.on('click',function(){
+           confirmed = true;
+        });
+
+
+        $cancel.on('click',function(){
+           confirmed = false;
+        });
+
+        $mask.on('click',function(){
+           confirmed = false;
+        });
+
+
+
+
+        function dismiss_alert(){
+            $mask.remove();
+            $box.remove();
+        }
+
+
+
 
         $title = $box.find('.alert-title').css({
-            padding:'30px 10px',
+            padding:'35px 10px',
             'font-weight' : 900,
             'font-size':20,
-            'text-align':'center',
-
-
+            'text-align':'center'
         });
 
         $content = $box.find('.alert-content').css({
@@ -65,9 +127,6 @@
             'text-align':'center',
 
         });
-
-
-
 
         //动态居中提醒框
         function adjust_box_positon(){
@@ -78,8 +137,6 @@
                box_h = $box.height(),
                move_x = (window_w-box_w)/2,
                move_y = (window_h-box_h)/2 - 50;
-
-            console.log($window.width());
 
 
             $box.css({
@@ -92,23 +149,13 @@
             adjust_box_positon();
         });
 
-        $mask = $('<div></div>').css({
-            position:'fixed',
-            top:0,
-            bottom:0,
-            left:0,
-            right:0,
-            background:'rgba(0,0,0,.3)'
-        });
+
+
+
 
         $body.append($mask);
         $body.append($box);
-
-        if(typeof arg == 'string'){
-            cfg.title = arg;
-        }else {
-            cfg = $.extend(cfg,arg);
-        }
+        return dfd.promise();
 
     }
 
@@ -158,11 +205,17 @@
 
             var index = $item.data('index');
 
-            var r = confirm('确定要删除吗？');
+         /*   var r = confirm('确定要删除吗？');*/
 
-            if(!r) return;
+            my_alert('确定要删除吗？').then(function(r){
+                if(r){
+                    delete_task(index);
+                }
+            });
 
-            delete_task(index);
+           /* if(!r) return;*/
+
+
 
         });
     }

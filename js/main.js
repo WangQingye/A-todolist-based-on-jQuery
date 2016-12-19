@@ -139,6 +139,42 @@
 
     }
 
+    //监听事件提醒时间：
+    function task_remind_check(){
+
+        var current_timestamp;
+
+        var itl = setInterval(function(){
+            for(var i= 0; i<task_list.length;i++){
+
+                var item = store.get('task_list')[i],
+                    task_reminddate;
+                if(!item || !item.remind_date || item.informed) continue;
+
+                current_timestamp = (new Date()).getTime();
+
+                task_reminddate = (new Date(item.remind_date)).getTime();
+
+                if (current_timestamp - task_reminddate >= 1) {  //现在的时间大于了设置的时间
+
+                    update_task(i,{informed:true});
+                    notice(item.content);
+
+                }
+
+            }
+        },1000);
+
+
+
+    }
+
+    function notice(content){
+
+        console.log(1);
+
+    }
+
     //查看task详情：
     function show_task_detail(index){
 
@@ -182,19 +218,20 @@
             '<div><input  style="display:none" type="text" name="content" value="'+item.content+'"></div>'+
             '<div>'+
             '<div class="desc">'+
-            '<textarea name="desc">'+item.desc+'</textarea>'+
+            '<textarea name="desc">'+(item.desc||'')+'</textarea>'+
             '</div>'+
             '</div>'+
             '<div class="remind">'+
-            '<input name="remind" type="date" value="'+item.remind_date+'">'+
+            '<laber>提醒时间:</laber>'+
+            '<input class="datetimepicker" name="remind" type="text" value="'+(item.remind_date||'')+'">'+
             '<button type="submit">更新</button>'+
             '</div>'+
             '</form>';
 
         $task_detail.html(null);
-
         $task_detail.html(task_detail_tpl);
-
+        $('.datetimepicker').datetimepicker();
+        $.datetimepicker.setLocale('ch');
         $update_form = $task_detail.find('button');
         var $detail_form = $task_detail.find('form');
         var $update_form_content = $task_detail.find('.content');
@@ -242,6 +279,8 @@
         task_list = store.get('task_list') || [];
 
         refresh_task_list();
+
+        task_remind_check();
 
     }
 

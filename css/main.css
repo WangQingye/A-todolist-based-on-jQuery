@@ -98,7 +98,8 @@ button{
 
 .task-item.completed{
     color: #aaa;
-    background: rgba(255,255,255,.8);
+    opacity: .8;
+
 }
 
 .task-item.completed:after{
@@ -141,6 +142,7 @@ button{
 textarea{
     border: 0;
     height:130px;
+    margin-bottom:10px;
 }
 
 .task-detail-mask{
